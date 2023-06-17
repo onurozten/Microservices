@@ -20,12 +20,6 @@ builder.Configuration
 
 var app = builder.Build();
 
-
-//var aa = app.Configuration.GetConnectionString("DefaultConnection"); // builder.configuration() testi
-
-;
-
 await app.UseOcelot();
-
 
 app.Run();

@@ -25,7 +25,7 @@ namespace FreeCourse.Services.PhotoStock.Controllers
                     await photo.CopyToAsync(stream, cancellationToken);
                 }
 
-                var returnPath = "photos/" + photo.FileName;
+                var returnPath = photo.FileName;
 
                 var photoDto = new PhotoDto { Url = returnPath };
 
@@ -40,7 +40,7 @@ namespace FreeCourse.Services.PhotoStock.Controllers
         {
             var photoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photos", photo);
             
-            if (System.IO.File.Exists(photoPath))
+            if (!System.IO.File.Exists(photoPath))
                 CreateActionResultInstance(Response<NoContent>.Fail("not found", 404));
                 
             System.IO.File.Delete(photoPath);

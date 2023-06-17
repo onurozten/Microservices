@@ -9,12 +9,12 @@ namespace FreeCourse.Services.Basket.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BasketController : CustomCountrollerBase
+    public class BasketsController : CustomCountrollerBase
     {
         private readonly IBasketService _basketService;
         private readonly ISharedIdentityService _sharedIdentityService;
 
-        public BasketController(IBasketService basketService, ISharedIdentityService sharedIdentityService)
+        public BasketsController(IBasketService basketService, ISharedIdentityService sharedIdentityService)
         {
             _basketService = basketService;
             _sharedIdentityService = sharedIdentityService;
@@ -31,6 +31,7 @@ namespace FreeCourse.Services.Basket.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveOrUpdate(BasketDto basketDto)
         {
+            basketDto.UserId = _sharedIdentityService.GetUserId;
             var response = await _basketService.SaveOrUpdate(basketDto);
             return CreateActionResultInstance(response);
         }

@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "SignIn";
+}
+@model SigninInput
+
+
+<div class="row">
+
+    <div class="col-md-4 offset-md-4">
+
+        <div class="card">
+            <div class="card-body">
+                <h5>Üye Girişi</h5>
+                <div asp-validation-summary="ModelOnly"/>
+                <form asp-controller="Auth" asp-action="SignIn" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email address</label>
+                        <input asp-for="Email" value="onur301@gmail.com" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <span asp-validation-for="Email" class="text-danger"/>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <input asp-for="Password" value="Password12*" type="password" class="form-control" id="exampleInputPassword1">
+                        <span asp-validation-for="Password" />
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input asp-for="IsRemember" type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label asp-for="IsRemember" class="form-check-label"></label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
