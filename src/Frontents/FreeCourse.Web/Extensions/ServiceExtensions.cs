@@ -30,10 +30,20 @@ namespace FreeCourse.Web.Extensions
             {
                 opt.BaseAddress = new Uri($"{serviceApiSetttings.GetawayBaseUri}/{serviceApiSetttings.Basket.Path}");
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
-            
+
             builder.Services.AddHttpClient<IDiscountService, DiscountService>(opt =>
             {
                 opt.BaseAddress = new Uri($"{serviceApiSetttings.GetawayBaseUri}/{serviceApiSetttings.Discount.Path}");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<IPaymentService, PaymentService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{serviceApiSetttings.GetawayBaseUri}/{serviceApiSetttings.Payment.Path}");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            builder.Services.AddHttpClient<IOrderService, OrderService>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{serviceApiSetttings.GetawayBaseUri}/{serviceApiSetttings.Order.Path}");
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
         }

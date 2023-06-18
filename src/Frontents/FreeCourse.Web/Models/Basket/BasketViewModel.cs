@@ -12,7 +12,7 @@ namespace FreeCourse.Web.Models.Basket
 
         public int? DiscountRate{ get; set; }
 
-        private List<BasketItemViewModel> _basketItems { get; set; }
+        private List<BasketItemViewModel> _basketItems;
 
         public List<BasketItemViewModel> BasketItems
         {

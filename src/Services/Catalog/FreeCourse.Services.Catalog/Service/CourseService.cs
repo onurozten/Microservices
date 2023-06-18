@@ -3,6 +3,7 @@ using FreeCourse.Services.Catalog.Dtos;
 using FreeCourse.Services.Catalog.Models;
 using FreeCourse.Services.Catalog.Settings;
 using FreeCourse.Shared.Dtos;
+using MASS=MassTransit;
 using MongoDB.Driver;
 
 namespace FreeCourse.Services.Catalog.Service
@@ -11,9 +12,10 @@ namespace FreeCourse.Services.Catalog.Service
     {
         private readonly IMongoCollection<Course> _courseCollection;
         private readonly IMapper _mapper;
+        private readonly MASS.IPublishEndpoint _publishEndpoint;
         private readonly IMongoCollection<Category> _categoryCollection;
 
-        public CourseService(IMapper mapper, IDatabaseSettings databaseSettings)
+        public CourseService(IMapper mapper, IDatabaseSettings databaseSettings, MASS.IPublishEndpoint publishEndpoint)
         {
             var client = new MongoClient(databaseSettings.ConnectionString);
             var database = client.GetDatabase(databaseSettings.DatabaseName);
@@ -21,6 +23,7 @@ namespace FreeCourse.Services.Catalog.Service
             _categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
 
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<Response<List<CourseDto>>> GetAllAsync()

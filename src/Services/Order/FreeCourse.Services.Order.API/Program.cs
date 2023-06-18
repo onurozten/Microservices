@@ -1,5 +1,7 @@
+using FreeCourse.Services.Order.Application.Consumers;
 using FreeCourse.Services.Order.Infrastucture;
 using FreeCourse.Shared.Services;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -7,6 +9,27 @@ using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<CreateOrderCommandMessageConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        // Default port 5672
+        cfg.Host(builder.Configuration["RabbitMQUrl"], "/", host =>
+        {
+            host.Username("guest");
+            host.Password("guest");
+        });
+
+        cfg.ReceiveEndpoint("create-order-service", e =>
+        {
+            e.ConfigureConsumer<CreateOrderCommandMessageConsumer>(context);
+        });
+
+    });
+});
 
 var requireAuthorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");

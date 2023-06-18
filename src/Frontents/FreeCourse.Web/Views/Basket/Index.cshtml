@@ -28,7 +28,7 @@
                         {
                             <tr>
                                 <td>@item.CourseName</td>
-                                <td>@item.Price TL @(Model.HasDiscount ? $"(%{Model.DiscountRate} uygulandı)":"")</td>
+                                <td>@item.GetCurrentPrice TL @(Model.HasDiscount ? $"(%{Model.DiscountRate} uygulandı)":"")</td>
                                 <td>
                                     <a class="btn btn-danger" asp-controller="Basket" asp-action="RemoveBasketItem" 
                                         asp-route-courseId="@item.CourseId">Sil</a>
@@ -75,6 +75,9 @@
                         {
                             <span class="text-danger">@TempData["discountError"]</span>
                         }
+
+                        <a class="btn btn-success" asp-controller="Order" asp-action="CheckOut">Ödeme Bilgileri</a>
+                        <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Kursları incelemeye devam et</a>
 
                         <div asp-validation-summary="All"></div>
 
