@@ -1,0 +1,10 @@
+Services
+	-catalogAPI = 5011
+	-photoStockAPI = 5012
+	-basketAPI = 5013
+	-discountAPI = 5014
+	-orderAPI = 5015
+	-fakePaymentAPI = 5016
+identityserver = 5001
+gateway = 5000
+web = 5010

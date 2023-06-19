@@ -21,8 +21,8 @@ namespace FreeCourse.Services.Basket.Consumers
         }
         public async Task Consume(ConsumeContext<CourseNameOrPriceChangedEvent> context)
         {
-            var server = _redisService.GetServer();
-            var keys = server.Keys(1).ToList();
+            var server = _redisService.GetServer(); 
+            var keys = server.Keys(1).ToList(); // Güzel bir yöntem olmayabilir, araştırılacak
 
             foreach (var item in keys)
             {

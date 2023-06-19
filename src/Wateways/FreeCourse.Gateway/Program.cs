@@ -1,9 +1,11 @@
+using FreeCourse.Gateway.DelegateHandlers;
 using Microsoft.Extensions.Options;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpClient<TokenExcangeDelegateHandler>();
 builder.Services.AddAuthentication().AddJwtBearer("GatewayAuthenticationScheme", options =>
 {
     options.Authority = builder.Configuration["IdentityServerURL"]; // token dağıtmakla görevli
@@ -11,7 +13,8 @@ builder.Services.AddAuthentication().AddJwtBearer("GatewayAuthenticationScheme",
     options.RequireHttpsMetadata = false;
 });
 
-builder.Services.AddOcelot();
+builder.Services.AddOcelot().AddDelegatingHandler<TokenExcangeDelegateHandler>();
+
 
 builder.Configuration
     .AddJsonFile($"configuration.{builder.Environment.EnvironmentName.ToLower()}.json")

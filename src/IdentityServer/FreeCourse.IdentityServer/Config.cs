@@ -65,10 +65,8 @@ namespace FreeCourse.IdentityServer
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AllowedScopes = {
                         "gateway_fullpermission",
-                        "discount_fullpermission",
                         "basket_fullpermission",
                         "order_fullpermission",
-                        "payment_fullpermission",
                         IdentityServerConstants.StandardScopes.Email,
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
@@ -77,12 +75,18 @@ namespace FreeCourse.IdentityServer
                         IdentityServerConstants.LocalApi.ScopeName
                     },
                     AccessTokenLifetime = 1*60*60, // buna gerek yok default zaten 1 saat
-                    
                     RefreshTokenExpiration = TokenExpiration.Absolute,
                     AbsoluteRefreshTokenLifetime =  (int)(DateTime.Now.AddDays(60) - DateTime.Now).TotalSeconds,
                     RefreshTokenUsage = TokenUsage.ReUse,
-
-                }
+                },
+                new Client
+                {
+                    ClientName = "Token Exchange Client",
+                    ClientId = "TokenExchangeClient",
+                    ClientSecrets = { new Secret ("secret".Sha256())},
+                    AllowedGrantTypes = new [] {"urn:ietf:params:oauth:grant-type:token-exchange" },
+                    AllowedScopes = { "discount_fullpermission", "payment_fullpermission", IdentityServerConstants.StandardScopes.OpenId }
+                },
             };
     }
 }
