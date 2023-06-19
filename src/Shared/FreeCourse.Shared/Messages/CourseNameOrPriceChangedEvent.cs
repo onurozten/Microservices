@@ -4,11 +4,13 @@ using System.Text;
 
 namespace FreeCourse.Shared.Messages
 {
-    public class CourseNameChangedEvent
+    public class CourseNameOrPriceChangedEvent
     {
         public string CourseId { get; set; }
 
         public string UpdatedName { get; set; }
+
+        public decimal UpdatedPrice { get; set; }
 
     }
 

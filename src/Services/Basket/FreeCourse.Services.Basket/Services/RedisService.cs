@@ -19,5 +19,9 @@ namespace FreeCourse.Services.Basket.Services
 
         public IDatabase GetDb(int db = 1) => _connectionMultiplexer.GetDatabase(db);
 
+        public IServer GetServer()
+        {
+            return _connectionMultiplexer.GetServer($"{_host}:{_port}");
+        }
     }
 }

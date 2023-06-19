@@ -28,6 +28,6 @@ namespace FreeCourse.Web.Models.Catalog
         public string CategoryId { get; set; }
 
         [Display(Name = "Kapak Resmi")]
-        public IFormFile PhotoFormFile { get; set; }
+        public IFormFile? PhotoFormFile { get; set; }
     }
 }

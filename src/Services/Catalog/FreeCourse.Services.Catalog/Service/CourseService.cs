@@ -5,6 +5,7 @@ using FreeCourse.Services.Catalog.Settings;
 using FreeCourse.Shared.Dtos;
 using MASS=MassTransit;
 using MongoDB.Driver;
+using FreeCourse.Shared.Messages;
 
 namespace FreeCourse.Services.Catalog.Service
 {
@@ -104,7 +105,12 @@ namespace FreeCourse.Services.Catalog.Service
             if (result == null)
                 return Response<NoContent>.Fail("An error occured on update", 404);
 
-            var dto = _mapper.Map<CourseDto>(updatedCourse);
+            await _publishEndpoint.Publish<CourseNameChangedEvent>(new CourseNameChangedEvent 
+                { CourseId = courseUpdateDto.Id, UpdatedName = courseUpdateDto.Name });
+
+
+            await _publishEndpoint.Publish<CourseNameOrPriceChangedEvent>(new CourseNameOrPriceChangedEvent
+            { CourseId = courseUpdateDto.Id, UpdatedName = courseUpdateDto.Name, UpdatedPrice = courseUpdateDto.Price });
 
             return Response<NoContent>.Success(204);
         }
