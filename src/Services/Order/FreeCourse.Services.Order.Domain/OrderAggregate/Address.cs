@@ -9,7 +9,7 @@ namespace FreeCourse.Services.Order.Domain.OrderAggregate
 {
     public class Address:ValueObject
     {
-        public string Province { get; private set; }
+        public string Province { get; private set; } = default!;
 
         public string District { get; private set; }
 

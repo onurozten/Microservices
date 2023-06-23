@@ -54,7 +54,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - RabbitMQUrl=rabbitmq
-      - IdentityServerURL=http://identityserver.api:5001
+      - IdentityServerURL=http://identityserver.api
       - DatabaseSettings:ConnectionString=mongodb://catalogdb:27017
     ports:
       - 5011:80
@@ -69,3 +69,87 @@ services:
       - 5001:80
     depends_on:
       - identitydb
+  basket.api:
+    container_name: basket.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - RabbitMQUrl=rabbitmq
+      - IdentityServerURL=http://identityserver.api
+      - RedisSettings:Host=basketdb
+      - RedisSettings:Port=6379
+    ports:
+      - 5013:80
+    depends_on:
+      - basketdb
+  photostock.api:
+    container_name: photostock.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+    ports:
+      - 5012:80
+    volumes:
+      - type: bind
+        source: C:\Microservice\src\photos_volume
+        target: /app/wwwroot/photos
+
+  discount.api:
+    container_name: discount.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - "ConnectionStrings:Host=User ID=appuser;Password=secret;Server=discount; Port=5432; Database=discountdb; Integrated Security=true; Pooling=true"
+    ports:
+      - 5014:80
+    depends_on:
+      - discount
+
+  fakepayment.api:
+    container_name: fakepayment.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - RabbitMQUrl=rabbitmq
+    ports:
+      - 5016:80
+
+  order.api:
+    container_name: order.api
+    restart: on-failure
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL=http://identityserver.api
+      - "ConnectionStrings:DefaultConnection=Server=orderdb,1433;Database=OrderDb; User=sa; Password=Password12*;Persist Security Info=False;Encrypt=False"
+      - RabbitMQUrl=rabbitmq
+    ports:
+      - 5015:80
+    depends_on:
+      - orderdb
+
+  gateway.api:
+    container_name: gateway.api
+    restart: on-failure
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - IdentityServerURL=http://identityserver.api
+    ports:
+      - 5000:80
+
+  aspnetcoremvc.web:
+    container_name: aspnetcoremvc.web
+    restart: on-failure
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ServiceApiSettings:IdentityBaseUri=http://identityserver.api
+      - ServiceApiSettings:GetawayBaseUri=http://gateway.api
+    ports:
+      - 5010:80
+    depends_on:
+      - gateway.api
+      - identityserver.api
+      - catalog.api
+      - basket.api
+      - discount.api
+      - order.api
+      - photostock.api
+      - fakepayment.api

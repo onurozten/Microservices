@@ -88,4 +88,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using(var scope = app.Services.CreateScope()){
+    var orderDbContext = scope.ServiceProvider.GetRequiredService<OrderDbContext>();
+    orderDbContext.Database.Migrate();
+}
+
+
 app.Run();

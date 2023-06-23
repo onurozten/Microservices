@@ -120,7 +120,10 @@ namespace FreeCourse.Services.Catalog.Service
             var result = await _courseCollection.DeleteOneAsync(x => x.Id == id);
 
             if (result.DeletedCount > 0)
+            {
                 return Response<NoContent>.Success(204);
+
+            }
 
             return Response<NoContent>.Fail("Course not found", 404);
         }

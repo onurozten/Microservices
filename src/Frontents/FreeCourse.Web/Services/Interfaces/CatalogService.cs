@@ -35,7 +35,16 @@ namespace FreeCourse.Web.Services.Interfaces
 
         public async Task<bool> DeleteCourseAsync(string id)
         {
+            var course = await GetByCourseIdAsync(id);
+            if (course == null)
+                return false;
+
             var response = await _httpClient.DeleteAsync($"courses/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                await _photoStockService.Deletephoto(course.Picture);
+            }
+
 
             return response.IsSuccessStatusCode;
         }
